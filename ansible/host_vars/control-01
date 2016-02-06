@@ -1,0 +1,8 @@
+private_ip: "192.168.33.50"
+ansible_host: "192.168.33.50"
+ansible_port: "22"
+consul_master: "yes"
+consul_join: "no"
+consul_server: "yes"
+nomad_master: "yes"
+nomad_server: "yes"

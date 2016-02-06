@@ -1,0 +1,32 @@
+{% if nomad_server == "yes" %}
+{
+    "datacenter": "{{ nomad_datacenter }}",
+    "data_dir": "/data/nomad",
+    "name": "{{ ansible_fqdn }}",
+    "bind_addr": "{{ private_ip }}",
+    "server": {
+        "enabled": true,
+{% if nomad_master == "yes" %}
+        "bootstrap_expect": {{ groups['control_nodes'] | length }},
+{% endif %}
+        "rejoin_after_leave": true
+    }
+}
+{% endif %}
+{% if nomad_server == "no" %}
+{
+    "datacenter": "{{ nomad_datacenter }}",
+    "data_dir": "/data/nomad",
+    "name": "{{ ansible_fqdn }}",
+    "bind_addr": "{{ private_ip }}",
+    "client": {
+        "enabled": true,
+        "network_interface": "enp0s8",
+        "servers": [ "nomad-server.service.consul:4647" ],
+        "node_id": "{{ ansible_fqdn }}",
+        "options": {
+              "consul.address": "consul.service.consul:8500"
+          }
+    }
+}
+{% endif %}

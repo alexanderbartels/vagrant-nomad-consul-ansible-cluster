@@ -1,0 +1,48 @@
+
+# update system and install needed package on all nodes + template logrotate config.
+- hosts: all
+  sudo: true
+  roles:
+   - { role: init, tags: init }
+
+# consul cluster must be running before installing nomad clients. serial 1 is needed for consul server setup.
+- hosts: control_nodes
+  sudo: true
+  serial: 1
+  roles:
+   - { role: consul, tags: consul }
+
+- hosts: frontend_nodes
+  sudo: true
+  roles:
+   - { role: consul, tags: consul }
+
+- hosts: mittletier_nodes
+  sudo: true
+  roles:
+   - { role: consul, tags: consul }
+
+# after consul is running the other roles can be provisioned.
+- hosts: all
+  sudo: true
+  roles:
+   - { role: ntp, tags: ntp }
+   - { role: dnsmasq, tags: dnsmasq }
+   - { role: docker, tags: docker }
+
+# starting nomad cluster- hosts: control_nodes
+- hosts: control_nodes
+  sudo: true
+  serial: 1
+  roles:
+   - { role: nomad, tags: nomad }
+
+- hosts: frontend_nodes
+  sudo: true
+  roles:
+   - { role: nomad, tags: nomad }
+
+- hosts: mittletier_nodes
+  sudo: true
+  roles:
+   - { role: nomad, tags: nomad }

@@ -1,0 +1,26 @@
+# os up to date and enable selinux
+- hosts: all
+  sudo: true
+  tasks:
+  - name: Update OS before all roles are running
+    yum:
+     name: "*"
+     update_cache: yes
+     disablerepo: "*"
+     enablerepo: "base,updates,extras"
+     state: latest
+
+  - name: libselinux-python present
+    yum:
+     name: "libselinux-python"
+     state: present
+
+  - name: set selinux on enforcing
+    selinux: policy=targeted state=enforcing
+
+  - name: reboot host
+    shell: nohup bash -c "sleep 2s && reboot" &
+
+  - name: Wait for server to come back
+    local_action: wait_for port="{{ ansible_port }}" host="{{ ansible_host }}" delay=10 state=started
+    sudo: false

@@ -29,6 +29,7 @@
    - { role: ntp, tags: ntp }
    - { role: dnsmasq, tags: dnsmasq }
    - { role: docker, tags: docker }
+   - { role: consul-template, tags: consul-template }
 
 # starting nomad cluster- hosts: control_nodes
 - hosts: control_nodes

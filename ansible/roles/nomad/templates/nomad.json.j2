@@ -25,7 +25,8 @@
         "servers": [ "nomad-server.service.consul:4647" ],
         "node_id": "{{ ansible_fqdn }}",
         "options": {
-              "consul.address": "consul.service.consul:8500"
+              "useLocalConsulAgent": "https://github.com/hashicorp/nomad/issues/640",
+              "consul.address": "127.0.0.1:8500"
           }
     }
 }

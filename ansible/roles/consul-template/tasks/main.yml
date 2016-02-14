@@ -1,0 +1,28 @@
+---
+# This role will install and run consul
+
+- name: Get consul-template
+  get_url:
+   url: "{{ item.url }}"
+   dest: "{{ item.dest }}"
+   validate_certs: no
+  with_items:
+   - url: "https://releases.hashicorp.com/consul-template/{{ consul_template_version }}/consul-template_{{ consul_template_version }}_linux_amd64.zip"
+     dest: /tmp/consul-template.zip
+
+- name: Install package unzip
+  yum:
+   name: unzip
+   state: present
+
+- name: Unzip consul-template
+  command: unzip /tmp/consul-template.zip -d /usr/bin/
+  args:
+   creates: /usr/bin/consul-template
+
+- name: Make consul app executable
+  file:
+   path: /usr/bin/consul-template
+   mode: 0755
+   owner: consul
+   group: consul

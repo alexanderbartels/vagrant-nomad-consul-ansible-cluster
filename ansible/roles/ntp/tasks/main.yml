@@ -44,10 +44,10 @@
   register:
     ntp_conf
 
-- name: set timezone to <COUNTRY>/europe
+- name: set timezone to Europe/Berlin
   command: "timedatectl set-timezone {{ ntptimezone }}"
 
-- name: sync ntp to 0.nl.pool.ntp.org
+- name: sync ntp to 0.de.pool.ntp.org
   command: "/sbin/ntpdate {{ ntpserv1 }}"
 
 - name: Script ntp for consul health check

@@ -1,0 +1,2 @@
+consul_template_version: 0.12.2
+consul_master_ip: "{{ hostvars[groups['control_nodes'][0]]['private_ip'] }}"
